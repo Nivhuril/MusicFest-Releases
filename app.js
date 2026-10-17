@@ -180,7 +180,7 @@ function renderError(message) {
 
 async function main() {
   try {
-    const response = await fetch("releases.json", { cache: "no-store" });
+    const response = await fetch(`releases.json?t=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const manifest = await response.json();
     renderManifest(manifest);
