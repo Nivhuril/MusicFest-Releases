@@ -3,9 +3,9 @@
     "protocol": "0.1",
     "latest": {
         "version": "0.1.1",
-        "date": "2026-10-17",
+        "date": "2026-10-18",
         "sizeMb": 498,
-        "sha256": "2d1410f853f9ecccbce6c42348b024600675e2a1cc796884b5247130bd757794",
+        "sha256": "2de8f91f2df2ea411af0d3bdbaf30b083642e8c3bc7228f34264901ecbba6a09",
         "downloadUrl": "https://github.com/Nivhuril/MusicFest-Releases/releases/download/v0.1.1/MusicFest-0.1.1.zip",
         "notes": [
             "Всё готово для первой публикации"
