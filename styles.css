@@ -104,6 +104,12 @@ a { color: var(--accent-2); }
 
 .download-meta { color: var(--muted); font-size: 0.9rem; }
 
+.download-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .download-btn {
   display: inline-block;
   text-align: center;
@@ -114,6 +120,7 @@ a { color: var(--accent-2); }
   padding: 14px 20px;
   border-radius: 12px;
   transition: transform 0.12s ease, filter 0.12s ease;
+  flex: 1 1 220px;
 }
 
 .download-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
@@ -122,6 +129,17 @@ a { color: var(--accent-2); }
   color: var(--muted);
   border: 1px dashed var(--line);
   pointer-events: none;
+}
+
+/* Android-кнопка: та же форма, но спокойнее по цвету, чтобы не спорить с основной. */
+.download-btn.secondary {
+  background: var(--bg-card-2);
+  color: var(--accent-2);
+  border: 1px solid var(--line);
+}
+.download-btn.secondary:hover {
+  border-color: var(--accent);
+  filter: none;
 }
 
 .download-note { font-size: 0.82rem; color: var(--muted); }

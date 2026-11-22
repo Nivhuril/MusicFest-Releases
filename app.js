@@ -6,6 +6,7 @@ const el = {
   downloadVersion: document.getElementById("download-version"),
   downloadMeta: document.getElementById("download-meta"),
   downloadBtn: document.getElementById("download-btn"),
+  downloadApkBtn: document.getElementById("download-apk-btn"),
   downloadNote: document.getElementById("download-note"),
   protocolNote: document.getElementById("protocol-note"),
   notesList: document.getElementById("notes-list"),
@@ -13,6 +14,9 @@ const el = {
   historyCard: document.getElementById("history-card"),
   history: document.getElementById("history"),
   integrity: document.getElementById("integrity"),
+  integrityApk: document.getElementById("integrity-apk"),
+  androidCard: document.getElementById("android-card"),
+  androidNote: document.getElementById("android-note"),
   footerGame: document.getElementById("footer-game"),
   footerUpdated: document.getElementById("footer-updated"),
 };
@@ -125,6 +129,41 @@ function renderHistory(entries) {
   el.historyCard.hidden = false;
 }
 
+function setDownloadButton(button, url, label) {
+  const trimmed = (url || "").trim();
+  if (trimmed) {
+    button.href = trimmed;
+    button.textContent = label;
+    button.removeAttribute("aria-disabled");
+    button.hidden = false;
+    return true;
+  }
+
+  button.href = "#";
+  button.setAttribute("aria-disabled", "true");
+  return false;
+}
+
+function renderAndroid(entry) {
+  const hasApk = Boolean(entry && (entry.downloadUrl || "").trim());
+
+  el.androidCard.hidden = !hasApk;
+  if (!hasApk) {
+    el.downloadApkBtn.hidden = true;
+    el.integrityApk.textContent = "";
+    return;
+  }
+
+  setDownloadButton(el.downloadApkBtn, entry.downloadUrl, "Скачать для Android");
+
+  const metaParts = [formatSizeMb(entry.sizeMb)].filter(Boolean);
+  el.androidNote.textContent = metaParts.length
+    ? `APK: ${metaParts.join(" · ")}. Версия та же, что у Windows — можно играть вместе.`
+    : "Версия та же, что у Windows — можно играть вместе.";
+
+  el.integrityApk.textContent = entry.sha256 ? `SHA-256 APK: ${entry.sha256}` : "";
+}
+
 function renderManifest(manifest) {
   const latest = manifest.latest || {};
   const protocol = manifest.protocol || "";
@@ -137,16 +176,14 @@ function renderManifest(manifest) {
   const metaParts = [formatDate(latest.date), formatSizeMb(latest.sizeMb)].filter(Boolean);
   el.downloadMeta.textContent = metaParts.join(" · ");
 
-  const url = (latest.downloadUrl || "").trim();
-  if (url) {
-    el.downloadBtn.href = url;
-    el.downloadBtn.removeAttribute("aria-disabled");
-    el.downloadNote.textContent = "Архив: распаковать целиком (MusicFest.exe + MusicFest_Data).";
+  if (setDownloadButton(el.downloadBtn, latest.downloadUrl, "Скачать для Windows")) {
+    el.downloadNote.textContent =
+      "Архив Windows: распаковать целиком (MusicFest.exe + MusicFest_Data).";
   } else {
-    el.downloadBtn.href = "#";
-    el.downloadBtn.setAttribute("aria-disabled", "true");
     el.downloadNote.textContent = "Ссылка на архив появится после публикации сборки.";
   }
+
+  renderAndroid(manifest.android);
 
   if (protocol) {
     el.protocolInline.textContent = protocol;
@@ -161,9 +198,7 @@ function renderManifest(manifest) {
   renderSchedule(manifest.schedule);
   renderHistory(manifest.history);
 
-  if (latest.sha256) {
-    el.integrity.textContent = `SHA-256 архива: ${latest.sha256}`;
-  }
+  el.integrity.textContent = latest.sha256 ? `SHA-256 архива: ${latest.sha256}` : "";
 
   el.footerGame.textContent = manifest.game || "MusicFest";
   el.footerUpdated.textContent = latest.date ? `обновлено ${formatDate(latest.date)}` : "";
@@ -173,6 +208,8 @@ function renderError(message) {
   el.downloadVersion.textContent = "v?";
   el.downloadMeta.textContent = "";
   el.downloadBtn.setAttribute("aria-disabled", "true");
+  el.downloadApkBtn.hidden = true;
+  el.androidCard.hidden = true;
   el.downloadNote.textContent = message;
   el.notesList.innerHTML = `<li class="muted">${escapeHtml(message)}</li>`;
   el.schedule.innerHTML = `<p class="muted">${escapeHtml(message)}</p>`;

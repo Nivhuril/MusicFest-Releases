@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MusicFest — скачать актуальную версию</title>
-  <meta name="description" content="MusicFest — сетевая песочница-фестиваль. Актуальная версия, что нового и расписание встреч." />
+  <meta name="description" content="MusicFest — сетевая песочница-фестиваль. Актуальная версия для Windows и Android, что нового и расписание встреч." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -21,7 +21,8 @@
       <h1>Собрались у костра?</h1>
       <p class="lead">
         Скачайте актуальную версию — и все на одном сервере. Версии одной серии
-        (<span id="protocol-inline">0.1</span>.x) совместимы между собой.
+        (<span id="protocol-inline">0.1</span>.x) совместимы между собой, а Windows и Android
+        играют вместе: номер версии у них общий.
       </p>
 
       <div class="download-card">
@@ -29,9 +30,14 @@
           <span class="download-version" id="download-version">v…</span>
           <span class="download-meta" id="download-meta">загрузка данных…</span>
         </div>
-        <a class="download-btn" id="download-btn" href="#" role="button">
-          Скачать для Windows
-        </a>
+        <div class="download-actions">
+          <a class="download-btn" id="download-btn" href="#" role="button">
+            Скачать для Windows
+          </a>
+          <a class="download-btn secondary" id="download-apk-btn" href="#" role="button" hidden>
+            Скачать для Android
+          </a>
+        </div>
         <div class="download-note" id="download-note"></div>
       </div>
 
@@ -55,7 +61,7 @@
     </section>
 
     <section class="card howto">
-      <h2>Как играть</h2>
+      <h2>Как играть на компьютере</h2>
       <ol>
         <li>Скачайте архив по кнопке выше и <strong>распакуйте его целиком</strong> —
           рядом должны остаться <code>MusicFest.exe</code> и папка <code>MusicFest_Data</code>.
@@ -72,12 +78,31 @@
       </p>
     </section>
 
+    <section class="card howto" id="android-card" hidden>
+      <h2>Как играть на телефоне</h2>
+      <ol>
+        <li>Скачайте APK по кнопке <em>Скачать для Android</em> выше.</li>
+        <li>Откройте файл на телефоне. Android спросит разрешение на установку из этого
+          источника — разрешите (обычно <em>Настройки → Безопасность → Неизвестные источники</em>
+          или подтверждение прямо в диалоге установки).</li>
+        <li>При первом запуске игра попросит имя и разрешение на микрофон — микрофон нужен
+          для эфира у костра и разговора рядом.</li>
+      </ol>
+      <p class="muted" id="android-note"></p>
+      <p class="muted">
+        Интерфейс на телефоне экранный: стик слева снизу, обзор — перетаскиванием пальца,
+        действия — кнопками. Музыку с компьютера транслировать с телефона нельзя: в эфир идёт
+        только микрофон. Телефоны с 32-битным процессором не поддерживаются (APK только ARM64).
+      </p>
+    </section>
+
     <section class="card history-card" id="history-card" hidden>
       <h2>Прошлые версии</h2>
       <div id="history"></div>
     </section>
 
     <p class="integrity muted" id="integrity"></p>
+    <p class="integrity muted" id="integrity-apk"></p>
   </main>
 
   <footer class="footer">
